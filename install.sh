@@ -13,10 +13,26 @@ install()
 	sudo tar xf gcc-arm-none-eabi.tar.xz --strip-components=1 -C /opt/gcc-arm-none-eabi
 	echo Adding environment variables
 	echo 'export PATH=$PATH:/opt/gcc-arm-none-eabi/bin' | sudo tee -a /etc/profile.d/gcc-arm-none-eabi.sh
-	source /etc/profile
+	echo "Sourcing profile scripts"
+	. /etc/profile
 	echo Testing version
 	arm-none-eabi-gcc --version
 	arm-none-eabi-g++ --version
+
+	
+	
+	echo Installing libncursesw5 and Python needed for gdb
+	sudo apt install -y libncursesw5
+	sudo add-apt-repository -y ppa:deadsnakes/ppa
+	sudo apt install -y python3.8
+	echo checking installed python version
+	python3.8 --version
+	
+	echo Checking if gdb is successfully installed
+	arm-none-eabi-gdb --version
+	
+	echo ARM toolchain succesfully installed!
+	
 	while true; do
 	    read -p "Do you want to delete the compressed installer file now?" yn
 	    case $yn in
@@ -25,8 +41,6 @@ install()
 		* ) echo "Please answer yes or no.";;
 	    esac
 	done
-	
-	echo ARM toolchain succesfully installed!
 }
 
 
